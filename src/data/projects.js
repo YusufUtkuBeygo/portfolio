@@ -6,13 +6,13 @@ export const projects = [
     title: 'WatchIt',
     summary: 'A video sharing platform I built to learn backend development end to end.',
     highlights: [
-      'REST API for channels, videos, comments, playlists and watch history.',
-      'PostgreSQL for data, MinIO object storage for video files.',
-      'Runs locally with Docker Compose.',
+      'REST API for channels, videos, comments, playlists and watch history, secured with JWT.',
+      'PostgreSQL with Flyway migrations; videos upload straight to MinIO through presigned URLs.',
+      'React frontend; the whole stack runs locally with Docker Compose.',
     ],
-    stack: ['Java', 'Spring Boot', 'PostgreSQL', 'MinIO', 'Docker'],
+    stack: ['Java', 'Spring Boot', 'PostgreSQL', 'MinIO', 'React'],
     color: '#b3245b',
-    repo: '',
+    repo: 'https://github.com/YusufUtkuBeygo/watchit',
     demo: '',
   },
   {

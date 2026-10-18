@@ -1,8 +1,8 @@
 import { createTimeline, stagger } from 'animejs';
 import { playBoot } from '../lib/sound.js';
+import { pixelIcon, GRID } from '../lib/pixel-icon.js';
 
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const GRID = 5;
 let run = 0; // bumps on every boot/idle so an old intro stops touching the screen after an eject
 
 export function idleScreen(screen) {
@@ -49,19 +49,4 @@ export async function bootScreen(screen, project, onStart, { blown = false } = {
   if (id !== run) return;
   start.style.visibility = 'visible';
   start.classList.add('ready');
-}
-
-// Identicon-style 5x5 icon: left half derived from the project id, mirrored to the right.
-function pixelIcon(seed) {
-  let h = 0;
-  for (const ch of seed) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
-  const cells = [];
-  for (let y = 0; y < GRID; y++) {
-    for (let x = 0; x < GRID; x++) {
-      const mx = x < 3 ? x : GRID - 1 - x;
-      const on = (h >> (y * 3 + mx)) & 1;
-      cells.push(`<i class="${on ? 'on' : ''}"></i>`);
-    }
-  }
-  return cells.join('');
 }

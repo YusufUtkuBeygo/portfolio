@@ -45,6 +45,12 @@ export function renderConsole(el) {
     screen.querySelector('.boot-start.ready')?.click();
   });
 
+  // "Play" buttons in the projects list ask for a cartridge by id.
+  window.addEventListener('cartridge:request', (e) => {
+    const cart = el.querySelector(`.cart[data-id="${e.detail}"]`);
+    if (cart && cart !== inserted && !locked) setTimeout(() => insert(cart), 450);
+  });
+
   window.addEventListener('resize', () => {
     if (inserted) utils.set(inserted, slotTarget(inserted, true));
   });
