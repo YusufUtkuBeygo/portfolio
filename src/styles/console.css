@@ -1,0 +1,319 @@
+.console-section {
+  max-width: 1100px;
+}
+
+.console-head {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.console-head h2 {
+  margin: 0 0 0.75rem;
+  font-size: clamp(1rem, 3vw, 1.5rem);
+}
+
+.console-head p {
+  margin: 0;
+  color: var(--muted);
+}
+
+/* ---------- desk ---------- */
+
+.desk {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 3rem;
+  padding: 3rem 2.5rem;
+  border-radius: 18px;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.07) 0 2px,
+      transparent 2px 120px
+    ),
+    linear-gradient(160deg, #6b4630, #4a2f20 70%);
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.08),
+    0 30px 60px rgba(0, 0, 0, 0.45);
+}
+
+.cart-tray {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.75rem;
+}
+
+/* ---------- cartridge ---------- */
+
+.cart {
+  --cart-color: #888;
+  position: relative;
+  width: 132px;
+  height: 150px;
+  padding: 0;
+  border: none;
+  /* Notched top-right corner, like a real cartridge shell. */
+  clip-path: polygon(0 0, 82% 0, 100% 12%, 100% 100%, 0 100%);
+  border-radius: 6px 0 6px 6px;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--cart-color) 85%, white), var(--cart-color));
+  transform: rotate(var(--tilt));
+  cursor: grab;
+  filter: drop-shadow(0 8px 6px rgba(0, 0, 0, 0.45));
+  transition: transform 0.2s ease;
+}
+
+.cart:hover,
+.cart:focus-visible {
+  transform: rotate(0deg) translateY(-6px);
+  outline: none;
+}
+
+.cart:focus-visible {
+  filter: drop-shadow(0 0 0 2px var(--screen-glow)) drop-shadow(0 8px 6px rgba(0, 0, 0, 0.45));
+}
+
+.cart-grip {
+  position: absolute;
+  top: 10px;
+  left: 14px;
+  right: 30px;
+  height: 14px;
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.22) 0 3px,
+    transparent 3px 7px
+  );
+  border-radius: 2px;
+}
+
+.cart-label {
+  position: absolute;
+  top: 34px;
+  left: 12px;
+  right: 12px;
+  bottom: 26px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 4px;
+  padding: 8px;
+  border-radius: 4px;
+  background: #f3ecdc;
+  color: #1d1a16;
+  text-align: left;
+  box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.12);
+}
+
+.cart-title {
+  font-size: 0.55rem;
+  line-height: 1.5;
+  color: var(--cart-color);
+  filter: brightness(0.7);
+}
+
+.cart-stack {
+  font-size: 0.65rem;
+  color: #6b6458;
+}
+
+.cart-pins {
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  bottom: 6px;
+  height: 10px;
+  background: repeating-linear-gradient(90deg, #c9a24a 0 4px, transparent 4px 7px);
+  opacity: 0.8;
+}
+
+/* ---------- handheld ---------- */
+
+.handheld {
+  position: relative;
+  width: 250px;
+  padding: 26px 22px 20px;
+  border-radius: 30px;
+  background: linear-gradient(170deg, #8cc3b6, var(--shell) 55%, #4f8a7e);
+  box-shadow:
+    inset -4px -6px 0 rgba(0, 0, 0, 0.12),
+    inset 3px 3px 0 rgba(255, 255, 255, 0.5),
+    0 24px 40px rgba(0, 0, 0, 0.5);
+}
+
+.handheld-slot {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  width: 150px;
+  height: 14px;
+  transform: translateX(-50%);
+  border-radius: 6px 6px 0 0;
+  background: linear-gradient(#2a2622, #4a443d);
+  box-shadow: inset 0 3px 4px rgba(0, 0, 0, 0.7);
+}
+
+.handheld-bezel {
+  position: relative;
+  padding: 16px 16px 10px;
+  border-radius: 14px;
+  background: #23262b;
+}
+
+.handheld-led {
+  position: absolute;
+  left: 9px;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #5a2a2a;
+}
+
+.handheld-screen {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 10 / 9;
+  border-radius: 3px;
+  background: var(--screen);
+  box-shadow: inset 0 0 18px rgba(0, 0, 0, 0.55);
+}
+
+.screen-idle {
+  margin: 0;
+  font-size: 0.6rem;
+  line-height: 1.8;
+  text-align: center;
+  color: var(--screen-glow);
+  animation: blink 1.4s steps(1) infinite;
+}
+
+.handheld-brand {
+  margin: 8px 0 0;
+  font-size: 0.5rem;
+  color: #c9d1cc;
+  text-align: center;
+  letter-spacing: 0.08em;
+}
+
+.handheld-brand span {
+  color: var(--accent);
+}
+
+.handheld-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 26px 6px 0;
+}
+
+.dpad {
+  position: relative;
+  width: 64px;
+  height: 64px;
+}
+
+.dpad span {
+  position: absolute;
+  background: #2b2a30;
+  border-radius: 4px;
+  box-shadow: 0 3px 0 #141317;
+}
+
+.dpad span:first-child {
+  left: 22px;
+  top: 0;
+  width: 20px;
+  height: 64px;
+}
+
+.dpad span:last-child {
+  top: 22px;
+  left: 0;
+  width: 64px;
+  height: 20px;
+}
+
+.face-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.face-btn {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 3px 0 #6e1538;
+}
+
+.face-btn + .face-btn {
+  background: #e3b341;
+  box-shadow: 0 3px 0 #8a6a1c;
+  color: rgba(255, 255, 255, 0.55);
+  font: 700 0.7rem var(--font-body);
+}
+
+.handheld-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 22px 4px 0;
+}
+
+.pill-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.pill-buttons span {
+  width: 30px;
+  height: 9px;
+  border-radius: 6px;
+  background: #2f5c54;
+}
+
+.speaker {
+  display: grid;
+  grid-template-columns: repeat(4, 6px);
+  gap: 5px;
+}
+
+.speaker i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* ---------- small screens: console on top, cartridges below ---------- */
+
+@media (max-width: 760px) {
+  .desk {
+    grid-template-columns: 1fr;
+    padding: 2.5rem 1rem;
+    gap: 2.5rem;
+  }
+
+  .handheld {
+    order: -1;
+    justify-self: center;
+  }
+
+  .cart {
+    width: 108px;
+    height: 124px;
+  }
+
+  .cart-label {
+    top: 30px;
+    padding: 6px;
+  }
+
+  .cart-title {
+    font-size: 0.45rem;
+  }
+}
