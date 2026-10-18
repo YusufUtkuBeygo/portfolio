@@ -1,0 +1,142 @@
+body.case-open {
+  overflow: hidden;
+}
+
+.case-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: 4vh 1rem;
+  background: rgba(10, 8, 12, 0.7);
+}
+
+.case-panel {
+  width: min(880px, 100%);
+  max-height: 92vh;
+  overflow: auto;
+  border-radius: 10px;
+  background:
+    repeating-linear-gradient(to bottom, rgba(0, 0, 0, 0.12) 0 1px, transparent 1px 3px),
+    var(--screen);
+  color: var(--screen-glow);
+  box-shadow:
+    inset 0 0 60px rgba(0, 0, 0, 0.55),
+    0 30px 80px rgba(0, 0, 0, 0.6);
+  transform-origin: center;
+}
+
+.case-bar {
+  position: sticky;
+  top: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.9rem 1.25rem;
+  font-size: 0.6rem;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.case-close {
+  padding: 0.5rem 0.75rem;
+  border: 2px solid currentColor;
+  border-radius: 4px;
+  background: none;
+  color: inherit;
+  font-size: 0.55rem;
+  cursor: pointer;
+}
+
+.case-close:hover,
+.case-close:focus-visible {
+  background: var(--screen-glow);
+  color: var(--screen);
+  outline: none;
+}
+
+.case-close small {
+  font-size: inherit;
+  opacity: 0.7;
+}
+
+.case-body {
+  padding: 2rem 1.5rem 2.5rem;
+}
+
+.case-title {
+  margin: 0 0 1rem;
+  font-size: clamp(1.2rem, 4vw, 2.2rem);
+  color: #e9f7e4;
+  text-shadow: 3px 3px 0 var(--cart-color);
+}
+
+.case-summary {
+  max-width: 40rem;
+  margin: 0 0 1.5rem;
+  font-size: 1.1rem;
+  color: #d6eecf;
+}
+
+.case-highlights {
+  max-width: 40rem;
+  margin: 0 0 1.75rem;
+  padding: 0;
+  list-style: none;
+}
+
+.case-highlights li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 0.6rem;
+  color: #c4e3bb;
+}
+
+.case-highlights li::before {
+  content: '\25B8';
+  position: absolute;
+  left: 0;
+  color: var(--screen-glow);
+}
+
+.case-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0 0 2rem;
+  padding: 0;
+  list-style: none;
+}
+
+.case-stack li {
+  padding: 0.3rem 0.65rem;
+  border: 1px solid rgba(155, 216, 143, 0.5);
+  border-radius: 4px;
+  font-size: 0.85rem;
+}
+
+.case-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.case-links a {
+  padding: 0.6rem 1rem;
+  border-radius: 4px;
+  background: var(--screen-glow);
+  color: var(--screen);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.case-links a:hover,
+.case-links a:focus-visible {
+  background: #e9f7e4;
+}
+
+.case-soon {
+  color: rgba(155, 216, 143, 0.7);
+  font-style: italic;
+}

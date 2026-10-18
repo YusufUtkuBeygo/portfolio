@@ -1,6 +1,8 @@
 import { animate, utils } from 'animejs';
 import { projects } from '../data/projects.js';
 import { playInsert, playEject } from '../lib/sound.js';
+import { bootScreen, idleScreen } from './screen.js';
+import { openCaseStudy } from './case-study.js';
 import '../styles/console.css';
 
 const TILTS = [-6, 4, -2, 7, -5];
@@ -34,6 +36,11 @@ export function renderConsole(el) {
     cart.dataset.tilt = TILTS[i % TILTS.length];
     utils.set(cart, { translateX: 0, translateY: 0, rotate: Number(cart.dataset.tilt) });
     enableDrag(cart);
+  });
+
+  // The physical O button does the same as the on-screen "PRESS O" button once the intro is done.
+  el.querySelector('.face-btn-o').addEventListener('click', () => {
+    screen.querySelector('.boot-start.ready')?.click();
   });
 
   window.addEventListener('resize', () => {
@@ -113,7 +120,7 @@ export function renderConsole(el) {
     cart.setAttribute('aria-pressed', 'true');
     handheldEl.classList.add('powered');
     const project = projects.find((p) => p.id === cart.dataset.id);
-    screen.innerHTML = `<p class="screen-title pixel">${project.title}</p>`;
+    bootScreen(screen, project, () => openCaseStudy(project, screen, cart));
     el.dispatchEvent(new CustomEvent('cartridge:inserted', { detail: project, bubbles: true }));
   }
 
@@ -124,7 +131,7 @@ export function renderConsole(el) {
     inserted = null;
     cart.classList.add('busy');
     handheldEl.classList.remove('powered');
-    screen.innerHTML = `<p class="screen-idle pixel">INSERT<br />CARTRIDGE</p>`;
+    idleScreen(screen);
     playEject();
     await animate(cart, { ...slotTarget(cart, false), duration: 200, ease: 'outQuad' });
     await sendHome(cart);
@@ -198,7 +205,7 @@ function handheld() {
         <div class="dpad"><span></span><span></span></div>
         <div class="face-buttons">
           <span class="face-btn">X</span>
-          <span class="face-btn">O</span>
+          <span class="face-btn face-btn-o">O</span>
         </div>
       </div>
       <div class="handheld-bottom" aria-hidden="true">

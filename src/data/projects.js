@@ -1,10 +1,16 @@
 // One entry per project = one cartridge on the desk. Add a new block here when a project ships.
+// `highlights` are the bullet points in the case study panel; leave it out if there is nothing yet.
 export const projects = [
   {
     id: 'watchit',
     title: 'WatchIt',
-    summary: 'A video platform backend: channels, comments, playlists and watch history.',
-    stack: ['Java', 'Spring Boot', 'PostgreSQL'],
+    summary: 'A video sharing platform I built to learn backend development end to end.',
+    highlights: [
+      'REST API for channels, videos, comments, playlists and watch history.',
+      'PostgreSQL for data, MinIO object storage for video files.',
+      'Runs locally with Docker Compose.',
+    ],
+    stack: ['Java', 'Spring Boot', 'PostgreSQL', 'MinIO', 'Docker'],
     color: '#b3245b',
     repo: '',
     demo: '',

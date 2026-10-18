@@ -352,3 +352,96 @@
     font-size: 0.45rem;
   }
 }
+
+/* ---------- boot intro on the console screen ---------- */
+
+.boot {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  height: 100%;
+}
+
+.boot-flash {
+  position: absolute;
+  inset: 0;
+  background: #e9f7e4;
+  pointer-events: none;
+}
+
+.boot-icon {
+  display: grid;
+  grid-template-columns: repeat(5, 8px);
+  gap: 2px;
+}
+
+.boot-icon i {
+  width: 8px;
+  height: 8px;
+}
+
+.boot-icon i.on {
+  background: var(--screen-glow);
+  box-shadow: inset -2px -2px 0 rgba(0, 0, 0, 0.25);
+}
+
+.boot-title {
+  margin: 0;
+  padding: 0 6px;
+  font-size: 0.5rem;
+  line-height: 1.6;
+  text-align: center;
+  color: #e9f7e4;
+}
+
+.boot-bar {
+  width: 60%;
+  height: 6px;
+  border: 1px solid var(--screen-glow);
+}
+
+.boot-bar span {
+  display: block;
+  width: 0;
+  height: 100%;
+  background: var(--screen-glow);
+}
+
+.boot-start {
+  padding: 4px 6px;
+  border: none;
+  background: none;
+  color: var(--screen-glow);
+  font-size: 0.45rem;
+  cursor: pointer;
+}
+
+.boot-start.ready {
+  animation: blink 1s steps(1) infinite;
+}
+
+.boot-start:hover,
+.boot-start:focus-visible {
+  animation: none;
+  background: var(--screen-glow);
+  color: var(--screen);
+  outline: none;
+}
+
+.handheld-controls {
+  pointer-events: none;
+}
+
+.face-btn-o {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.face-btn-o:active {
+  translate: 0 2px;
+  box-shadow: 0 1px 0 #8a6a1c;
+}

@@ -46,6 +46,25 @@ export function playInsert() {
   noiseBurst(ac, t + 0.07, 0.025, 3200, 0.35);
 }
 
+// Rising square-wave arpeggio for the boot screen.
+export function playBoot() {
+  const ac = audio();
+  const t = ac.currentTime;
+  [392, 523, 659, 784, 1047].forEach((freq, i) => {
+    const osc = ac.createOscillator();
+    const amp = ac.createGain();
+    const at = t + 0.25 + i * 0.075;
+    const len = i === 4 ? 0.35 : 0.07;
+    osc.type = 'square';
+    osc.frequency.value = freq;
+    amp.gain.setValueAtTime(0.06, at);
+    amp.gain.exponentialRampToValueAtTime(0.001, at + len);
+    osc.connect(amp).connect(ac.destination);
+    osc.start(at);
+    osc.stop(at + len);
+  });
+}
+
 export function playEject() {
   const ac = audio();
   const t = ac.currentTime;
