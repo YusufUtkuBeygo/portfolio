@@ -1,0 +1,45 @@
+:root {
+  --bg: #16131a;
+  --fg: #ece6da;
+  --muted: #9a9387;
+  --accent: #b3245b;
+  --shell: #c9c3b6;
+  --screen: #3d5a3a;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-pixel: 'Press Start 2P', monospace;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  line-height: 1.6;
+}
+
+.section {
+  min-height: 60vh;
+  padding: 4rem 1rem;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.pixel {
+  font-family: var(--font-pixel);
+  line-height: 1.4;
+}
+
+.placeholder {
+  color: var(--muted);
+  text-align: center;
+}
+
+a {
+  color: var(--accent);
+}
