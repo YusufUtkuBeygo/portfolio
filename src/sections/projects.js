@@ -26,25 +26,27 @@ export function renderProjects(el) {
 }
 
 function card(p) {
-  const links = [
-    p.repo && `<a href="${p.repo}" target="_blank" rel="noopener">Code &#8599;</a>`,
-    p.demo && `<a href="${p.demo}" target="_blank" rel="noopener">Demo &#8599;</a>`,
-  ].filter(Boolean);
-
   return `
     <article class="project-card" style="--cart-color: ${p.color}">
       <div class="project-top">
         <div class="project-icon" aria-hidden="true">${pixelIcon(p.id)}</div>
         <h3 class="pixel">${p.title}</h3>
+        ${p.status ? `<span class="project-status">${p.status}</span>` : ''}
       </div>
       <p class="project-summary">${p.summary}</p>
       <ul class="project-stack">${p.stack.map((s) => `<li>${s}</li>`).join('')}</ul>
       <div class="project-actions">
         <button type="button" class="project-play pixel" data-play="${p.id}">&#9654; Play</button>
-        ${links.join('')}
       </div>
     </article>
   `;
+}
+
+// Used by the case study panel: both slots always show, so a missing link reads as "coming soon" instead of vanishing.
+export function projectLink(url, label) {
+  return url
+    ? `<a href="${url}" target="_blank" rel="noopener">${label} &#8599;</a>`
+    : `<span class="link-soon" title="${label} link coming soon">${label} · soon</span>`;
 }
 
 function revealOnScroll(cards) {

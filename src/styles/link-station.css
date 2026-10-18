@@ -1,0 +1,252 @@
+.link-desk {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 2.5rem;
+  margin-top: 2.5rem;
+  padding: 3rem 2rem 2.5rem;
+  border-radius: 18px;
+  background:
+    repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.08) 0 2px, transparent 2px 90px),
+    linear-gradient(200deg, #3b3346, #2a2432 70%);
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.06),
+    0 24px 50px rgba(0, 0, 0, 0.4);
+}
+
+.floppy-tray {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  max-width: 320px;
+}
+
+/* ---------- floppy disk ---------- */
+
+.floppy {
+  --disk-color: #555;
+  position: relative;
+  width: 86px;
+  height: 90px;
+  padding: 0;
+  border: none;
+  /* Cut corner, like a 3.5" disk. */
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 9% 100%, 0 91%);
+  border-radius: 4px;
+  background: linear-gradient(160deg, color-mix(in srgb, var(--disk-color) 80%, white), var(--disk-color));
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  z-index: 1;
+  filter: drop-shadow(0 7px 5px rgba(0, 0, 0, 0.45));
+  transition: translate 0.2s ease;
+}
+
+.floppy:hover,
+.floppy:focus-visible {
+  translate: 0 -6px;
+  outline: none;
+}
+
+.floppy:focus-visible {
+  filter: drop-shadow(0 0 0 2px var(--screen-glow)) drop-shadow(0 7px 5px rgba(0, 0, 0, 0.45));
+}
+
+.floppy.dragging {
+  z-index: 10;
+  cursor: grabbing;
+  translate: none;
+}
+
+.floppy.in-slot {
+  z-index: 2;
+  translate: none;
+  pointer-events: none;
+}
+
+.floppy-shutter {
+  position: absolute;
+  top: 0;
+  left: 24px;
+  width: 42px;
+  height: 24px;
+  left: 22px;
+  border-radius: 0 0 3px 3px;
+  background: linear-gradient(90deg, #b9bec4, #e6e9ec 45%, #a9aeb4);
+}
+
+.floppy-shutter span {
+  position: absolute;
+  top: 5px;
+  right: 7px;
+  width: 9px;
+  height: 14px;
+  background: #3a3d42;
+}
+
+.floppy-label {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: 6px;
+  height: 56px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border-radius: 3px;
+  background: #f3ecdc;
+}
+
+.floppy-icon {
+  width: 32px;
+  height: 32px;
+  image-rendering: pixelated;
+  pointer-events: none;
+}
+
+.floppy-icon.custom {
+  image-rendering: auto;
+  object-fit: contain;
+  border-radius: 50%; /* the GitHub file has a white square background; clip it to the round mark */
+}
+
+.floppy-name {
+  font-size: 0.36rem;
+  color: #1d1a16;
+}
+
+/* ---------- Link Station ---------- */
+
+.station {
+  position: relative;
+  z-index: 3;
+  width: 250px;
+  padding: 24px 18px 14px;
+  border-radius: 12px 12px 18px 18px;
+  background: linear-gradient(175deg, #e7dfcc, #d3c8b0 60%, #b9ad93);
+  box-shadow:
+    inset 0 -6px 0 rgba(0, 0, 0, 0.12),
+    inset 2px 2px 0 rgba(255, 255, 255, 0.5),
+    0 20px 36px rgba(0, 0, 0, 0.5);
+}
+
+.station-slot {
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  width: 116px;
+  height: 12px;
+  transform: translateX(-50%);
+  border-radius: 5px 5px 0 0;
+  background: linear-gradient(#2a2622, #4a443d);
+  box-shadow: inset 0 3px 4px rgba(0, 0, 0, 0.7);
+}
+
+.station-face {
+  display: flex;
+  gap: 12px;
+}
+
+.station-screen {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 6px;
+  min-height: 86px;
+  padding: 8px;
+  border: 6px solid #3c3a40;
+  border-radius: 6px;
+  background: var(--screen);
+  box-shadow: inset 0 0 14px rgba(0, 0, 0, 0.55);
+  text-align: center;
+}
+
+.station-line,
+.station-dots {
+  margin: 0;
+  font-size: 0.45rem;
+  line-height: 1.8;
+  color: var(--screen-glow);
+}
+
+.station-dots {
+  min-height: 1em;
+  letter-spacing: 2px;
+}
+
+.station-open {
+  color: var(--screen-glow);
+  font-size: 0.5rem;
+  text-decoration: none;
+  animation: blink 1s steps(1) infinite;
+}
+
+.station-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 0;
+}
+
+.station-led {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #3d5a3a;
+}
+
+.station.online .station-led {
+  background: #7dff6b;
+  box-shadow: 0 0 8px #7dff6b;
+  animation: blink 0.25s steps(1) infinite;
+}
+
+.station-grille {
+  display: grid;
+  gap: 4px;
+}
+
+.station-grille i {
+  width: 22px;
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.station-brand {
+  margin: 12px 0 0;
+  font-size: 0.42rem;
+  color: #5d5444;
+  letter-spacing: 0.06em;
+}
+
+.station-brand span {
+  color: var(--accent);
+}
+
+@media (max-width: 760px) {
+  .link-desk {
+    padding: 2.5rem 1rem 2rem;
+  }
+
+  .station {
+    order: -1;
+  }
+}
+
+.station-error {
+  color: #ff8a7a;
+  animation: blink 0.5s steps(1) infinite;
+}
+
+.station-mail {
+  font-size: 0.38rem;
+  color: #e9f7e4;
+  overflow-wrap: anywhere;
+}

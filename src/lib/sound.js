@@ -88,6 +88,52 @@ export function playBlow() {
   src.start(t);
 }
 
+// Modem handshake: a run of dual-tone beeps, then a short burst of static.
+export function playDial() {
+  const ac = audio();
+  const t = ac.currentTime;
+  const pairs = [
+    [697, 1209],
+    [770, 1336],
+    [852, 1477],
+    [941, 1336],
+    [770, 1209],
+  ];
+  pairs.forEach(([lo, hi], i) => {
+    const at = t + i * 0.11;
+    const amp = ac.createGain();
+    amp.gain.setValueAtTime(0.05, at);
+    amp.gain.setValueAtTime(0, at + 0.08);
+    amp.connect(ac.destination);
+    [lo, hi].forEach((freq) => {
+      const osc = ac.createOscillator();
+      osc.frequency.value = freq;
+      osc.connect(amp);
+      osc.start(at);
+      osc.stop(at + 0.08);
+    });
+  });
+  noiseBurst(ac, t + pairs.length * 0.11 + 0.05, 0.35, 1800, 0.25);
+}
+
+// Two quick rising blips for "PRESS START".
+export function playStart() {
+  const ac = audio();
+  const t = ac.currentTime;
+  [660, 990].forEach((freq, i) => {
+    const osc = ac.createOscillator();
+    const amp = ac.createGain();
+    const at = t + i * 0.09;
+    osc.type = 'square';
+    osc.frequency.value = freq;
+    amp.gain.setValueAtTime(0.06, at);
+    amp.gain.exponentialRampToValueAtTime(0.001, at + 0.12);
+    osc.connect(amp).connect(ac.destination);
+    osc.start(at);
+    osc.stop(at + 0.12);
+  });
+}
+
 export function playEject() {
   const ac = audio();
   const t = ac.currentTime;

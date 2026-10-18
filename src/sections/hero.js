@@ -1,5 +1,6 @@
 import { animate, stagger } from 'animejs';
 import { profile } from '../data/profile.js';
+import { playStart } from '../lib/sound.js';
 import '../styles/hero.css';
 
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -14,6 +15,8 @@ export function renderHero(el) {
     <p class="hero-about">${profile.about}</p>
     <a class="hero-start pixel" href="#console">PRESS START &#9660;</a>
   `;
+
+  el.querySelector('.hero-start').addEventListener('click', pressStart);
 
   const title = el.querySelector('.hero-typed');
   const role = el.querySelector('.hero-role-word');
@@ -60,4 +63,31 @@ async function cycleRoles(node, roles) {
     }
     await sleep(300);
   }
+}
+
+// Retro "PRESS START": blip, fast blink, then an eased scroll down to the console instead of a hard jump.
+async function pressStart(e) {
+  e.preventDefault();
+  const link = e.currentTarget;
+  const target = document.querySelector(link.getAttribute('href'));
+  if (reducedMotion) return target.scrollIntoView();
+
+  playStart();
+  link.classList.add('pressed');
+  await sleep(450);
+  link.classList.remove('pressed');
+  smoothScrollTo(target.getBoundingClientRect().top + window.scrollY - 24, 900);
+}
+
+function smoothScrollTo(y, duration) {
+  const startY = window.scrollY;
+  const distance = y - startY;
+  const t0 = performance.now();
+  const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2); // inOutCubic
+  function step(now) {
+    const t = Math.min((now - t0) / duration, 1);
+    window.scrollTo(0, startY + distance * ease(t));
+    if (t < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
 }

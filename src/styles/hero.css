@@ -71,6 +71,11 @@ body::after {
   animation: none;
 }
 
+.hero-start.pressed {
+  animation: blink 0.1s steps(1) infinite;
+  color: var(--screen-glow);
+}
+
 .cursor {
   display: inline-block;
   width: 0.6em;

@@ -108,3 +108,19 @@
 .project-actions a:hover {
   color: var(--accent);
 }
+
+.project-status {
+  margin-left: auto;
+  padding: 0.15rem 0.5rem;
+  border: 1px solid var(--cart-color);
+  border-radius: 999px;
+  font-size: 0.7rem;
+  white-space: nowrap;
+  color: var(--fg);
+}
+
+.link-soon {
+  color: var(--muted);
+  font-size: 0.9rem;
+  opacity: 0.7;
+}

@@ -136,7 +136,16 @@ body.case-open {
   background: #e9f7e4;
 }
 
-.case-soon {
-  color: rgba(155, 216, 143, 0.7);
-  font-style: italic;
+.case-links .link-soon {
+  padding: 0.6rem 1rem;
+  border: 1px dashed rgba(155, 216, 143, 0.5);
+  border-radius: 4px;
+  color: rgba(155, 216, 143, 0.75);
+}
+
+.case-status {
+  margin: -0.25rem 0 1rem;
+  font-size: 0.55rem;
+  color: #e3b341;
+  animation: blink 1.4s steps(1) infinite;
 }

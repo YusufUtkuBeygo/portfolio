@@ -12,9 +12,8 @@
   font-size: clamp(1rem, 3vw, 1.5rem);
 }
 
-.console-head p {
-  margin: 0;
-  color: var(--muted);
+.console-head .how-to {
+  margin-top: 0.25rem;
 }
 
 /* ---------- desk ---------- */
@@ -270,26 +269,77 @@
   height: 20px;
 }
 
-.face-buttons {
+/* The one action button: big round PLAY that pulses once a cartridge has booted. */
+.play-wrap {
   display: flex;
-  gap: 10px;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
 }
 
-.face-btn {
+.play-btn {
   display: grid;
   place-items: center;
-  width: 34px;
-  height: 34px;
+  width: 58px;
+  height: 58px;
+  padding: 0;
+  border: none;
   border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 3px 0 #6e1538;
+  background: radial-gradient(circle at 35% 30%, #ff5c93, var(--accent) 60%, #8c1a47);
+  box-shadow:
+    0 5px 0 #5e1030,
+    inset 0 -3px 0 rgba(0, 0, 0, 0.2),
+    inset 0 2px 0 rgba(255, 255, 255, 0.35);
+  color: #fff;
+  font-size: 1.3rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: translate 0.08s, box-shadow 0.08s;
 }
 
-.face-btn + .face-btn {
-  background: #e3b341;
-  box-shadow: 0 3px 0 #8a6a1c;
-  color: rgba(255, 255, 255, 0.55);
-  font: 700 0.7rem var(--font-body);
+.play-btn span {
+  translate: 3px 0; /* optical centering of the triangle */
+}
+
+.play-btn:active {
+  translate: 0 4px;
+  box-shadow:
+    0 1px 0 #5e1030,
+    inset 0 -2px 0 rgba(0, 0, 0, 0.2);
+}
+
+.play-btn:focus-visible {
+  outline: 3px solid var(--screen-glow);
+  outline-offset: 3px;
+}
+
+.handheld.ready-to-play .play-btn {
+  animation: play-pulse 1.1s ease-in-out infinite;
+}
+
+@keyframes play-pulse {
+  50% {
+    box-shadow:
+      0 5px 0 #5e1030,
+      0 0 0 8px rgba(255, 92, 147, 0.25),
+      inset 0 2px 0 rgba(255, 255, 255, 0.35);
+  }
+}
+
+.play-label {
+  font-size: 0.45rem;
+  color: #2f5c54;
+  letter-spacing: 0.1em;
+}
+
+.screen-nudge {
+  animation: nudge 0.3s steps(2) 2;
+}
+
+@keyframes nudge {
+  50% {
+    translate: 4px 0;
+  }
 }
 
 .handheld-bottom {
@@ -299,16 +349,48 @@
   margin: 22px 4px 0;
 }
 
-.pill-buttons {
+.eject-wrap {
   display: flex;
-  gap: 12px;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
 }
 
-.pill-buttons span {
-  width: 30px;
-  height: 9px;
-  border-radius: 6px;
+.eject-btn {
+  width: 44px;
+  height: 14px;
+  padding: 0;
+  border: none;
+  border-radius: 8px;
   background: #2f5c54;
+  box-shadow: 0 3px 0 #1d3a35;
+  cursor: pointer;
+  transition: translate 0.08s, box-shadow 0.08s, background 0.2s;
+}
+
+.eject-btn:not(:disabled):hover {
+  background: #3d7369;
+}
+
+.eject-btn:not(:disabled):active {
+  translate: 0 2px;
+  box-shadow: 0 1px 0 #1d3a35;
+}
+
+.eject-btn:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.eject-btn:focus-visible {
+  outline: 3px solid var(--screen-glow);
+  outline-offset: 2px;
+}
+
+.eject-label {
+  font-size: 0.4rem;
+  color: #2f5c54;
+  letter-spacing: 0.08em;
 }
 
 .speaker {
@@ -432,16 +514,3 @@
   outline: none;
 }
 
-.handheld-controls {
-  pointer-events: none;
-}
-
-.face-btn-o {
-  pointer-events: auto;
-  cursor: pointer;
-}
-
-.face-btn-o:active {
-  translate: 0 2px;
-  box-shadow: 0 1px 0 #8a6a1c;
-}

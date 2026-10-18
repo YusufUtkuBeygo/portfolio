@@ -7,6 +7,7 @@ let run = 0; // bumps on every boot/idle so an old intro stops touching the scre
 
 export function idleScreen(screen) {
   run++;
+  screen.closest('.handheld')?.classList.remove('ready-to-play');
   screen.innerHTML = `<p class="screen-idle pixel">INSERT<br />CARTRIDGE</p>`;
 }
 
@@ -14,6 +15,7 @@ export function idleScreen(screen) {
 // A cartridge that was blown on first (step 6) also shows a "dust cleared" line.
 export async function bootScreen(screen, project, onStart, { blown = false } = {}) {
   const id = ++run;
+  screen.closest('.handheld')?.classList.remove('ready-to-play');
   screen.innerHTML = `
     <div class="boot" style="--cart-color: ${project.color}">
       <div class="boot-flash"></div>
@@ -21,7 +23,7 @@ export async function bootScreen(screen, project, onStart, { blown = false } = {
       <p class="boot-title pixel">${project.title}</p>
       <div class="boot-bar" aria-hidden="true"><span></span></div>
       ${blown ? '<p class="boot-clean pixel">DUST CLEARED &#10003;</p>' : ''}
-      <button class="boot-start pixel" type="button">PRESS O &#9654;</button>
+      <button class="boot-start pixel" type="button">PRESS PLAY &#9654;</button>
     </div>
   `;
   const start = screen.querySelector('.boot-start');
@@ -30,6 +32,8 @@ export async function bootScreen(screen, project, onStart, { blown = false } = {
   if (reducedMotion) {
     screen.querySelector('.boot-bar span').style.width = '100%';
     screen.querySelector('.boot-flash').remove();
+    start.classList.add('ready');
+    screen.closest('.handheld')?.classList.add('ready-to-play');
     return;
   }
 
@@ -49,4 +53,5 @@ export async function bootScreen(screen, project, onStart, { blown = false } = {
   if (id !== run) return;
   start.style.visibility = 'visible';
   start.classList.add('ready');
+  screen.closest('.handheld')?.classList.add('ready-to-play');
 }

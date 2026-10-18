@@ -17,7 +17,10 @@ export function renderConsole(el) {
   el.innerHTML = `
     <header class="console-head">
       <h2 class="pixel">Pick a cartridge</h2>
-      <p>Drag one into the slot on top of the console, or just click it.</p>
+      <p class="how-to">
+        <span class="pixel">HOW TO</span>
+        Drag a cartridge into the slot on top of the console, or just click one. When it boots, press PLAY.
+      </p>
     </header>
     <div class="desk">
       <div class="cart-tray">
@@ -40,9 +43,21 @@ export function renderConsole(el) {
     enableDrag(cart);
   });
 
-  // The physical O button does the same as the on-screen "PRESS O" button once the intro is done.
-  el.querySelector('.face-btn-o').addEventListener('click', () => {
-    screen.querySelector('.boot-start.ready')?.click();
+  const ejectBtn = el.querySelector('.eject-btn');
+  ejectBtn.addEventListener('click', () => {
+    if (inserted && !locked) eject();
+  });
+
+  // PLAY opens the case study once the intro is done; with no cartridge it nudges the screen as a hint.
+  el.querySelector('.play-btn').addEventListener('click', () => {
+    const start = screen.querySelector('.boot-start.ready');
+    if (start) return start.click();
+    if (!inserted) {
+      const idle = screen.querySelector('.screen-idle');
+      idle?.classList.remove('screen-nudge');
+      void idle?.offsetWidth; // restart the animation
+      idle?.classList.add('screen-nudge');
+    }
   });
 
   // "Play" buttons in the projects list ask for a cartridge by id.
@@ -129,6 +144,7 @@ export function renderConsole(el) {
     cart.classList.remove('busy');
     locked = false;
     cart.setAttribute('aria-pressed', 'true');
+    ejectBtn.disabled = false;
     handheldEl.classList.add('powered');
     const project = projects.find((p) => p.id === cart.dataset.id);
     bootScreen(screen, project, () => openCaseStudy(project, screen, cart), {
@@ -145,8 +161,18 @@ export function renderConsole(el) {
     cart.classList.add('busy');
     handheldEl.classList.remove('powered');
     idleScreen(screen);
+    ejectBtn.disabled = true;
     playEject();
-    await animate(cart, { ...slotTarget(cart, false), duration: 200, ease: 'outQuad' });
+    // Spring out of the slot: shoot up past the hover point, wobble, then fly back to the desk.
+    const up = slotTarget(cart, false);
+    await animate(cart, {
+      translateX: up.translateX,
+      translateY: up.translateY - 40,
+      rotate: [0, -8],
+      duration: 320,
+      ease: 'outBack(2)',
+    });
+    await animate(cart, { rotate: [-8, 6, 0], duration: 220, ease: 'inOutSine' });
     await sendHome(cart);
     cart.setAttribute('aria-pressed', 'false');
     if (!keepLock) locked = false;
@@ -214,16 +240,19 @@ function handheld() {
         </div>
         <p class="handheld-brand pixel">UTK-8 <span>POCKET</span></p>
       </div>
-      <div class="handheld-controls" aria-hidden="true">
-        <div class="dpad"><span></span><span></span></div>
-        <div class="face-buttons">
-          <span class="face-btn">X</span>
-          <span class="face-btn face-btn-o">O</span>
+      <div class="handheld-controls">
+        <div class="dpad" aria-hidden="true"><span></span><span></span></div>
+        <div class="play-wrap">
+          <button class="play-btn" type="button" aria-label="Play the inserted cartridge"><span>&#9654;</span></button>
+          <span class="play-label pixel" aria-hidden="true">PLAY</span>
         </div>
       </div>
-      <div class="handheld-bottom" aria-hidden="true">
-        <div class="pill-buttons"><span></span><span></span></div>
-        <div class="speaker">${'<i></i>'.repeat(8)}</div>
+      <div class="handheld-bottom">
+        <div class="eject-wrap">
+          <button class="eject-btn" type="button" aria-label="Eject cartridge" disabled></button>
+          <span class="eject-label pixel" aria-hidden="true">EJECT</span>
+        </div>
+        <div class="speaker" aria-hidden="true">${'<i></i>'.repeat(8)}</div>
       </div>
     </div>
   `;

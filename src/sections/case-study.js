@@ -1,4 +1,5 @@
 import { animate } from 'animejs';
+import { projectLink } from './projects.js';
 import '../styles/case-study.css';
 
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -16,6 +17,7 @@ export function openCaseStudy(project, fromEl, returnFocusTo) {
       </header>
       <div class="case-body">
         <h2 id="case-title" class="case-title pixel">${project.title}</h2>
+        ${project.status ? `<p class="case-status pixel">&#9632; ${project.status.toUpperCase()}</p>` : ''}
         <p class="case-summary">${project.summary}</p>
         ${
           project.highlights?.length
@@ -90,10 +92,7 @@ export function openCaseStudy(project, fromEl, returnFocusTo) {
 }
 
 function links(project) {
-  const out = [];
-  if (project.repo) out.push(`<a href="${project.repo}" target="_blank" rel="noopener">Source code &#8599;</a>`);
-  if (project.demo) out.push(`<a href="${project.demo}" target="_blank" rel="noopener">Live demo &#8599;</a>`);
-  return out.length ? out.join('') : `<span class="case-soon">Links coming soon</span>`;
+  return [projectLink(project.demo, 'Live demo'), projectLink(project.repo, 'GitHub')].join('');
 }
 
 function trapFocus(e, root) {
