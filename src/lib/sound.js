@@ -65,6 +65,29 @@ export function playBoot() {
   });
 }
 
+// Breathy whoosh: noise through a low-pass filter that sweeps down while fading out.
+export function playBlow() {
+  const ac = audio();
+  const t = ac.currentTime;
+  const duration = 0.5;
+  const buffer = ac.createBuffer(1, Math.ceil(ac.sampleRate * duration), ac.sampleRate);
+  const data = buffer.getChannelData(0);
+  for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
+
+  const src = ac.createBufferSource();
+  src.buffer = buffer;
+  const filter = ac.createBiquadFilter();
+  filter.type = 'lowpass';
+  filter.frequency.setValueAtTime(2200, t);
+  filter.frequency.exponentialRampToValueAtTime(400, t + duration);
+  const amp = ac.createGain();
+  amp.gain.setValueAtTime(0.001, t);
+  amp.gain.exponentialRampToValueAtTime(0.5, t + 0.06);
+  amp.gain.exponentialRampToValueAtTime(0.001, t + duration);
+  src.connect(filter).connect(amp).connect(ac.destination);
+  src.start(t);
+}
+
 export function playEject() {
   const ac = audio();
   const t = ac.currentTime;

@@ -11,7 +11,8 @@ export function idleScreen(screen) {
 }
 
 // Boot intro: flash, pixel icon builds from the center, title, loading bar, then a start button.
-export async function bootScreen(screen, project, onStart) {
+// A cartridge that was blown on first (step 6) also shows a "dust cleared" line.
+export async function bootScreen(screen, project, onStart, { blown = false } = {}) {
   const id = ++run;
   screen.innerHTML = `
     <div class="boot" style="--cart-color: ${project.color}">
@@ -19,6 +20,7 @@ export async function bootScreen(screen, project, onStart) {
       <div class="boot-icon" aria-hidden="true">${pixelIcon(project.id)}</div>
       <p class="boot-title pixel">${project.title}</p>
       <div class="boot-bar" aria-hidden="true"><span></span></div>
+      ${blown ? '<p class="boot-clean pixel">DUST CLEARED &#10003;</p>' : ''}
       <button class="boot-start pixel" type="button">PRESS O &#9654;</button>
     </div>
   `;

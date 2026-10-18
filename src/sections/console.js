@@ -3,6 +3,7 @@ import { projects } from '../data/projects.js';
 import { playInsert, playEject } from '../lib/sound.js';
 import { bootScreen, idleScreen } from './screen.js';
 import { openCaseStudy } from './case-study.js';
+import { createShakeDetector, blowOn } from './blow.js';
 import '../styles/console.css';
 
 const TILTS = [-6, 4, -2, 7, -5];
@@ -10,7 +11,7 @@ const DRAG_THRESHOLD = 6; // px of movement before a press counts as a drag inst
 const INSERT_DEPTH = 0.58; // how much of the cartridge disappears into the slot
 
 // Step 4: drag a cartridge into the slot (or click it) to insert; click the inserted one to eject.
-// Steps 5-6 react to the 'cartridge:inserted' event with the screen intro and the blow easter egg.
+// Step 5: insert boots the screen intro. Step 6: shake a cartridge while dragging to blow the dust off it.
 export function renderConsole(el) {
   el.classList.add('console-section');
   el.innerHTML = `
@@ -24,6 +25,7 @@ export function renderConsole(el) {
       </div>
       ${handheld()}
     </div>
+    <p class="desk-tip">Retro tip: if a cartridge acts up, give it a good shake.</p>
   `;
 
   const handheldEl = el.querySelector('.handheld');
@@ -50,6 +52,7 @@ export function renderConsole(el) {
   function enableDrag(cart) {
     let start = null;
     let dragging = false;
+    const shake = createShakeDetector();
 
     cart.addEventListener('pointerdown', (e) => {
       if (cart === inserted || cart.classList.contains('busy')) return;
@@ -60,6 +63,7 @@ export function renderConsole(el) {
         ty: utils.get(cart, 'translateY', false),
       };
       dragging = false;
+      shake.reset();
       cart.setPointerCapture(e.pointerId);
     });
 
@@ -74,6 +78,7 @@ export function renderConsole(el) {
         animate(cart, { rotate: 0, scale: 1.06, duration: 150, ease: 'outQuad' });
       }
       utils.set(cart, { translateX: start.tx + dx, translateY: start.ty + dy });
+      if (shake.update(e.clientX)) blowOn(cart);
     });
 
     cart.addEventListener('pointerup', () => {
@@ -120,7 +125,9 @@ export function renderConsole(el) {
     cart.setAttribute('aria-pressed', 'true');
     handheldEl.classList.add('powered');
     const project = projects.find((p) => p.id === cart.dataset.id);
-    bootScreen(screen, project, () => openCaseStudy(project, screen, cart));
+    bootScreen(screen, project, () => openCaseStudy(project, screen, cart), {
+      blown: cart.dataset.blown === '1',
+    });
     el.dispatchEvent(new CustomEvent('cartridge:inserted', { detail: project, bubbles: true }));
   }
 
